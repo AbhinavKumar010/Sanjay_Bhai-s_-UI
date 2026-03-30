@@ -9,7 +9,7 @@
 /* ================= BODY WITH ANIMATED GRADIENT ================= */
 body {
   min-height: 100vh;
-  background: linear-gradient(-45deg, #667eea, #764ba2, #6b73ff, #000dff);
+  background: linear-gradient(-45deg, #667eea, #764ba2, #6b73ff, #c25565);
   background-size: 400% 400%;
   animation: gradientBG 12s ease infinite;
   color: #fff;
@@ -183,6 +183,8 @@ button:hover {
 }
 
 /* ================= MEDIA QUERIES ================= */
+
+/* Tablets & small desktops */
 @media (max-width: 768px) {
   .container {
     margin: 30px 10px;
@@ -208,27 +210,81 @@ button:hover {
   }
 }
 
+/* Mobile devices */
 @media (max-width: 480px) {
   .container {
     margin: 20px 5px;
     padding: 15px;
+    border-radius: 18px;
   }
 
   h2 {
     font-size: 1.3rem;
   }
 
-  button, .match-btn {
-    font-size: 0.95rem;
-    padding: 12px;
+  input {
+    padding: 16px;
+    font-size: 1rem;
+    border-radius: 16px;
   }
 
-  input {
-    padding: 12px;
-    font-size: 0.9rem;
+  button, .match-btn {
+    font-size: 1rem;
+    padding: 16px;
+    border-radius: 18px;
   }
 
   .chat-box {
-    max-height: 45vh;
+    max-height: 40vh;
+    padding: 10px;
+  }
+
+  .message {
+    font-size: 0.85rem;
+  }
+
+  .navbar {
+    gap: 12px;
+    padding: 10px;
+  }
+
+  .navbar a {
+    font-size: 0.9rem;
+    padding: 8px 10px;
+  }
+
+  .splash {
+    padding: 10px;
+  }
+
+  .logo {
+    width: 80px;
+    transform: scale(0.5) translateY(80px);
+  }
+
+  .logo-show {
+    transform: scale(1) translateY(0);
+  }
+}
+
+/* Extra small phones */
+@media (max-width: 360px) {
+  .container {
+    width: 95%;
+    padding: 12px;
+    margin: 15px auto;
+  }
+
+  input, button, .match-btn {
+    font-size: 0.9rem;
+    padding: 12px;
+  }
+
+  h2 {
+    font-size: 1.2rem;
+  }
+
+  .chat-box {
+    max-height: 35vh;
   }
 }
