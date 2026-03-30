@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import socket from "../socket/socket";
+import {socket} from "../socket/socket";
 
 function Chat() {
   const location = useLocation();
