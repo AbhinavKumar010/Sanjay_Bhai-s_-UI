@@ -1,3 +1,4 @@
+// src/App.jsx
 import React, { useState, useEffect } from "react";
 import "./styles.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -9,31 +10,32 @@ import Register from "./pages/Register";
 import Home from "./pages/Home";
 import Chat from "./pages/Chat";
 
-// Import CRA service worker registration
-import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
+// Import Socket.IO client if needed
+import { io } from "socket.io-client";
+
+// Connect to backend Socket.IO (make sure backend is running on port 5000)
+export const socket = io("http://localhost:5000");
 
 function App() {
   const [showSplash, setShowSplash] = useState(true);
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [showInstallBtn, setShowInstallBtn] = useState(false);
 
-  // Splash screen timer (optional)
+  // Splash screen timer
   useEffect(() => {
-    const timer = setTimeout(() => setShowSplash(false), 3000); // 3 sec splash
+    const timer = setTimeout(() => setShowSplash(false), 3000); // 3 sec
     return () => clearTimeout(timer);
   }, []);
 
   // Handle PWA install prompt
   useEffect(() => {
-    window.addEventListener("beforeinstallprompt", (e) => {
+    const handler = (e) => {
       e.preventDefault();
       setDeferredPrompt(e);
       setShowInstallBtn(true);
-    });
-
-    return () => {
-      window.removeEventListener("beforeinstallprompt", () => {});
     };
+    window.addEventListener("beforeinstallprompt", handler);
+    return () => window.removeEventListener("beforeinstallprompt", handler);
   }, []);
 
   const handleInstallClick = async () => {
@@ -45,9 +47,18 @@ function App() {
     setShowInstallBtn(false);
   };
 
-  // Register service worker for offline capability
+  // Register service worker (only in production)
   useEffect(() => {
-    serviceWorkerRegistration.register();
+    if (import.meta.env.PROD && "serviceWorker" in navigator) {
+      navigator.serviceWorker
+        .register("/service-worker.js")
+        .then((registration) => {
+          console.log("SW registered:", registration);
+        })
+        .catch((err) => {
+          console.error("SW registration failed:", err);
+        });
+    }
   }, []);
 
   if (showSplash) {
@@ -57,7 +68,7 @@ function App() {
   return (
     <Router>
       <Navbar />
-      
+
       {showInstallBtn && (
         <div style={{ textAlign: "center", margin: "10px" }}>
           <button
