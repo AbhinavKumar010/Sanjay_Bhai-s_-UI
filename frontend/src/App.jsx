@@ -1,4 +1,3 @@
-// src/App.jsx
 import React, { useState, useEffect } from "react";
 import "./styles.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -10,20 +9,42 @@ import Register from "./pages/Register";
 import Home from "./pages/Home";
 import Chat from "./pages/Chat";
 
-// Import Socket.IO client if needed
 import { io } from "socket.io-client";
 
-// Connect to backend Socket.IO (make sure backend is running on port 5000)
-export const socket = io("http://localhost:5000");
+// ✅ FIXED SOCKET CONFIG
+export const socket = io("https://sanjay-bhai-s-ux.onrender.com", {
+  transports: ["polling", "websocket"], // ✅ IMPORTANT
+  autoConnect: false, // ✅ control connection manually
+});
 
 function App() {
   const [showSplash, setShowSplash] = useState(true);
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [showInstallBtn, setShowInstallBtn] = useState(false);
 
+  // 🔥 SOCKET CONNECTION
+  useEffect(() => {
+    socket.connect();
+
+    socket.on("connect", () => {
+      console.log("✅ Connected:", socket.id);
+
+      // register user after connection
+      socket.emit("register", "Abhinav"); // later replace with dynamic username
+    });
+
+    socket.on("connect_error", (err) => {
+      console.log("❌ Socket error:", err.message);
+    });
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
   // Splash screen timer
   useEffect(() => {
-    const timer = setTimeout(() => setShowSplash(false), 3000); // 3 sec
+    const timer = setTimeout(() => setShowSplash(false), 3000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -34,29 +55,34 @@ function App() {
       setDeferredPrompt(e);
       setShowInstallBtn(true);
     };
+
     window.addEventListener("beforeinstallprompt", handler);
-    return () => window.removeEventListener("beforeinstallprompt", handler);
+    return () =>
+      window.removeEventListener("beforeinstallprompt", handler);
   }, []);
 
   const handleInstallClick = async () => {
     if (!deferredPrompt) return;
+
     deferredPrompt.prompt();
     const choice = await deferredPrompt.userChoice;
+
     console.log("User choice:", choice.outcome);
+
     setDeferredPrompt(null);
     setShowInstallBtn(false);
   };
 
-  // Register service worker (only in production)
+  // Service worker register (PWA)
   useEffect(() => {
     if (import.meta.env.PROD && "serviceWorker" in navigator) {
       navigator.serviceWorker
         .register("/service-worker.js")
         .then((registration) => {
-          console.log("SW registered:", registration);
+          console.log("✅ SW registered:", registration);
         })
         .catch((err) => {
-          console.error("SW registration failed:", err);
+          console.error("❌ SW failed:", err);
         });
     }
   }, []);
@@ -69,6 +95,7 @@ function App() {
     <Router>
       <Navbar />
 
+      {/* Install Button */}
       {showInstallBtn && (
         <div style={{ textAlign: "center", margin: "10px" }}>
           <button
@@ -87,6 +114,7 @@ function App() {
         </div>
       )}
 
+      {/* Routes */}
       <Routes>
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
