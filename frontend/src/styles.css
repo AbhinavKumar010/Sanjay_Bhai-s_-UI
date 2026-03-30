@@ -1,4 +1,4 @@
-/* Reset */
+/* ================= RESET ================= */
 * {
   margin: 0;
   padding: 0;
@@ -6,13 +6,13 @@
   font-family: "Segoe UI", sans-serif;
 }
 
-/* Body with animated gradient */
+/* ================= BODY WITH ANIMATED GRADIENT ================= */
 body {
+  min-height: 100vh;
   background: linear-gradient(-45deg, #667eea, #764ba2, #6b73ff, #000dff);
   background-size: 400% 400%;
-  animation: gradientBG 10s ease infinite;
+  animation: gradientBG 12s ease infinite;
   color: #fff;
-  min-height: 100vh;
 }
 
 /* Gradient Animation */
@@ -22,66 +22,76 @@ body {
   100% { background-position: 0% 50%; }
 }
 
-/* Container - mobile friendly */
+/* ================= CONTAINER ================= */
 .container {
-  max-width: 90%;
-  margin: 50px auto;
+  max-width: 95%;
+  margin: 40px auto;
   padding: 20px;
   border-radius: 20px;
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(20px);
-  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(15px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.4);
   text-align: center;
+  transition: all 0.3s ease;
 }
 
-/* Heading */
+/* ================= HEADINGS ================= */
 h2 {
-  font-size: 1.8rem;
+  font-size: 2rem;
   margin-bottom: 20px;
+  font-weight: 600;
+  text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
 }
 
-/* Inputs */
+/* ================= INPUTS ================= */
 input {
   width: 100%;
   padding: 16px;
   margin: 12px 0;
   border: none;
-  border-radius: 12px;
+  border-radius: 14px;
   font-size: 1rem;
   outline: none;
-  background: rgba(255,255,255,0.2);
-  color: white;
+  background: rgba(255,255,255,0.15);
+  color: #fff;
+  transition: all 0.3s;
 }
 
-/* Buttons - touch friendly */
+input:focus {
+  background: rgba(255,255,255,0.25);
+  box-shadow: 0 0 10px rgba(255,255,255,0.4);
+}
+
+/* ================= BUTTONS ================= */
 button {
   width: 100%;
-  padding: 18px;
+  padding: 16px;
   margin-top: 12px;
-  background: #667eea;
+  border-radius: 14px;
   border: none;
-  color: white;
   font-size: 1.1rem;
   font-weight: bold;
-  border-radius: 12px;
   cursor: pointer;
-  transition: 0.3s;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #fff;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
 button:hover {
-  background: #5a67d8;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
 }
 
-/* Navbar */
+/* ================= NAVBAR ================= */
 .navbar {
   display: flex;
   justify-content: center;
   gap: 15px;
   padding: 12px;
-  background: rgba(255,255,255,0.2);
+  background: rgba(0,0,0,0.3);
   backdrop-filter: blur(10px);
   border-radius: 15px;
-  box-shadow: 0 5px 10px rgba(0,0,0,0.2);
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -89,50 +99,69 @@ button:hover {
 
 .navbar a {
   text-decoration: none;
-  color: white;
+  color: #fff;
   font-weight: 600;
   font-size: 1rem;
+  transition: 0.2s;
 }
 
-/* Chat Box */
+.navbar a:hover {
+  color: #ffd700;
+}
+
+/* ================= CHAT BOX ================= */
 .chat-box {
   max-height: 60vh;
   overflow-y: auto;
   padding: 12px;
   margin-bottom: 12px;
   border-radius: 15px;
-  background: rgba(255,255,255,0.1);
+  background: rgba(0,0,0,0.25);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
-/* Messages */
+/* ================= MESSAGES ================= */
 .message {
   padding: 12px;
-  margin: 8px 0;
   border-radius: 15px;
   max-width: 80%;
   word-wrap: break-word;
+  font-size: 0.95rem;
+  transition: all 0.2s;
 }
 
 .me {
   background: #667eea;
-  color: white;
+  color: #fff;
   margin-left: auto;
 }
 
 .other {
   background: rgba(255,255,255,0.3);
-  color: white;
+  color: #fff;
   margin-right: auto;
 }
 
-/* Match Button */
+/* ================= MATCH BUTTON ================= */
 .match-btn {
   font-size: 1.2rem;
   padding: 16px;
   border-radius: 15px;
+  background: linear-gradient(135deg, #ff7e5f, #feb47b);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
 }
 
-/* Splash screen */
+.match-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+}
+
+/* ================= SPLASH SCREEN ================= */
 .splash {
   height: 100vh;
   display: flex;
@@ -153,7 +182,7 @@ button:hover {
   transform: scale(1.2) translateY(0);
 }
 
-/* Media Queries for Mobile */
+/* ================= MEDIA QUERIES ================= */
 @media (max-width: 768px) {
   .container {
     margin: 30px 10px;
@@ -164,7 +193,7 @@ button:hover {
     font-size: 1.5rem;
   }
 
-  button {
+  button, .match-btn {
     font-size: 1rem;
     padding: 14px;
   }
@@ -189,7 +218,7 @@ button:hover {
     font-size: 1.3rem;
   }
 
-  button {
+  button, .match-btn {
     font-size: 0.95rem;
     padding: 12px;
   }
@@ -197,5 +226,9 @@ button:hover {
   input {
     padding: 12px;
     font-size: 0.9rem;
+  }
+
+  .chat-box {
+    max-height: 45vh;
   }
 }

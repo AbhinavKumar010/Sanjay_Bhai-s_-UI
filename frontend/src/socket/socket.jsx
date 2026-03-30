@@ -1,8 +1,10 @@
 import { io } from "socket.io-client";
 
-const socket = io("https://sanjay-bhai-s-ux.onrender.com", {
-  transports: ["polling", "websocket"], // ✅ IMPORTANT
-  withCredentials: true,
+export const socket = io("https://sanjay-bhai-s-ux.onrender.com", {
+  transports: ["polling", "websocket"],
+  autoConnect: false,
+  timeout: 30000, // ✅ increase timeout (VERY IMPORTANT)
+  reconnection: true,
+  reconnectionAttempts: 10,
+  reconnectionDelay: 2000,
 });
-
-export default socket;

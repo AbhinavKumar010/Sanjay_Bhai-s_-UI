@@ -1,3 +1,4 @@
+// src/App.jsx
 import React, { useState, useEffect } from "react";
 import "./styles.css";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -9,12 +10,17 @@ import Register from "./pages/Register";
 import Home from "./pages/Home";
 import Chat from "./pages/Chat";
 
+// ================= SOCKET.IO CONFIG =================
 import { io } from "socket.io-client";
 
-// ✅ FIXED SOCKET CONFIG
+// Connect to backend Socket.IO
 export const socket = io("https://sanjay-bhai-s-ux.onrender.com", {
-  transports: ["polling", "websocket"], // ✅ IMPORTANT
-  autoConnect: false, // ✅ control connection manually
+  transports: ["polling", "websocket"],
+  autoConnect: false,         // control connection manually
+  timeout: 30000,             // 30 sec timeout
+  reconnection: true,         // auto reconnect
+  reconnectionAttempts: 10,   // max retries
+  reconnectionDelay: 2000,    // 2 sec between retries
 });
 
 function App() {
@@ -22,19 +28,28 @@ function App() {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [showInstallBtn, setShowInstallBtn] = useState(false);
 
-  // 🔥 SOCKET CONNECTION
+  // ================= SOCKET CONNECTION =================
   useEffect(() => {
     socket.connect();
+
+    // Remove duplicate listeners
+    socket.off("connect");
+    socket.off("connect_error");
+    socket.off("disconnect");
 
     socket.on("connect", () => {
       console.log("✅ Connected:", socket.id);
 
       // register user after connection
-      socket.emit("register", "Abhinav"); // later replace with dynamic username
+      socket.emit("register", "Abhinav"); // replace with dynamic username later
     });
 
     socket.on("connect_error", (err) => {
       console.log("❌ Socket error:", err.message);
+    });
+
+    socket.on("disconnect", () => {
+      console.log("⚠️ Disconnected");
     });
 
     return () => {
@@ -42,13 +57,13 @@ function App() {
     };
   }, []);
 
-  // Splash screen timer
+  // ================= SPLASH SCREEN =================
   useEffect(() => {
-    const timer = setTimeout(() => setShowSplash(false), 3000);
+    const timer = setTimeout(() => setShowSplash(false), 3000); // 3 sec splash
     return () => clearTimeout(timer);
   }, []);
 
-  // Handle PWA install prompt
+  // ================= PWA INSTALL =================
   useEffect(() => {
     const handler = (e) => {
       e.preventDefault();
@@ -57,8 +72,7 @@ function App() {
     };
 
     window.addEventListener("beforeinstallprompt", handler);
-    return () =>
-      window.removeEventListener("beforeinstallprompt", handler);
+    return () => window.removeEventListener("beforeinstallprompt", handler);
   }, []);
 
   const handleInstallClick = async () => {
@@ -66,27 +80,23 @@ function App() {
 
     deferredPrompt.prompt();
     const choice = await deferredPrompt.userChoice;
-
     console.log("User choice:", choice.outcome);
 
     setDeferredPrompt(null);
     setShowInstallBtn(false);
   };
 
-  // Service worker register (PWA)
+  // ================= SERVICE WORKER =================
   useEffect(() => {
     if (import.meta.env.PROD && "serviceWorker" in navigator) {
       navigator.serviceWorker
         .register("/service-worker.js")
-        .then((registration) => {
-          console.log("✅ SW registered:", registration);
-        })
-        .catch((err) => {
-          console.error("❌ SW failed:", err);
-        });
+        .then((registration) => console.log("✅ SW registered:", registration))
+        .catch((err) => console.error("❌ SW failed:", err));
     }
   }, []);
 
+  // ================= RENDER SPLASH OR APP =================
   if (showSplash) {
     return <Splash onFinish={() => setShowSplash(false)} />;
   }
