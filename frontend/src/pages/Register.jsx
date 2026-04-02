@@ -35,6 +35,9 @@ function Register() {
 
   return (
     <div className="container">
+        <button className="back-btn"  onClick={() => navigate("/")}>
+        ← Back to Login
+      </button>
       <h2>Register</h2>
 
       <input

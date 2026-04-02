@@ -167,14 +167,15 @@ button:hover {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: radial-gradient(circle at center, #3360d2, #883ab5, #6346b9);
+  background: linear-gradient(155deg,#33b0d2, #c06e81);
 }
 
 .logo {
-  width: 120px;
+  width: 220px;
   opacity: 0;
   transform: scale(0.3) translateY(100px);
   transition: all 1.2s ease;
+  border-radius: 70%;
 }
 
 .logo-show {
