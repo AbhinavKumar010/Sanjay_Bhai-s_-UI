@@ -9,29 +9,24 @@ function Login() {
 
   const handleLogin = async () => {
     try {
-      const res = await API.post("/auth/login", {
-        email,
-        password,
-      });
-
+      const res = await API.post("/auth/login", { email, password });
       localStorage.setItem("token", res.data.token);
       alert("Login successful");
       navigate("/home");
     } catch (err) {
       alert("Login failed");
+      console.error(err);
     }
   };
 
-return (
-  <div className="container">
-    <h2>Login</h2>
-
-    <input placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
-    <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
-
-    <button onClick={handleLogin}>Login</button>
-  </div>
-);
+  return (
+    <div className="container">
+      <h2>Login</h2>
+      <input placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
+      <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
+      <button onClick={handleLogin}>Login</button>
+    </div>
+  );
 }
 
 export default Login;

@@ -1,37 +1,55 @@
 import React, { useState, useEffect } from "react";
-import {socket} from "../socket/socket";
+import { socket } from "../socket/socket";
 import { useNavigate } from "react-router-dom";
+import DummyUsers from "./DummyUsers"; // ← import the new component
 
 function Home() {
   const navigate = useNavigate();
   const [onlineUsers, setOnlineUsers] = useState([]);
+  const [searching, setSearching] = useState(false);
+  const [showDummy, setShowDummy] = useState(false); // ← new state
 
+  // Fetch online users and handle matches
   useEffect(() => {
-    socket.on("online-users", (users) => {
-      setOnlineUsers(users);
-    });
-    return () => socket.off("online-users");
-  }, []);
+    socket.emit("get-online-users");
 
-  const startMatching = (user) => {
-    socket.emit("find-match");
+    socket.on("online-users", (users) => setOnlineUsers(users));
 
     socket.on("match-found", (partner) => {
-      navigate("/chat", { state: { partner } });
+      setSearching(false);
+      navigate("/chat", { state: { partner, isCaller: true } });
     });
+
+    return () => {
+      socket.off("online-users");
+      socket.off("match-found");
+    };
+  }, [navigate]);
+
+  const startMatching = () => {
+    setSearching(true);
+    socket.emit("find-match");
+
+    // Show dummy users after clicking "Find Someone"
+    setShowDummy(true);
   };
 
   return (
     <div className="container">
-      <h2>Find Someone</h2>
-      <button onClick={startMatching}>Find Someone</button>
+      <h2>Find Someone to Chat</h2>
+      <button onClick={startMatching} disabled={searching}>
+        {searching ? "Searching..." : "Find Someone"}
+      </button>
 
-      <h3>Online Users</h3>
+      <h3>Registered Online Users</h3>
       <ul>
         {onlineUsers.map((user) => (
           <li key={user.socketId}>{user.username}</li>
         ))}
       </ul>
+
+      {/* Render dummy users without touching existing functions */}
+      {showDummy && <DummyUsers onClose={() => setShowDummy(false)} />}
     </div>
   );
 }
