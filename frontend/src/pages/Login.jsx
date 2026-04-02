@@ -24,7 +24,7 @@ function Login() {
     <div className="container">
       {/* 🔙 Back Button */}
       <button className="back-btn"  onClick={() => navigate("/")}>
-        ← Back to register
+        ← Register
       </button>
 
       <h2>Login</h2>
