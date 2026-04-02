@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import API from "../services/api";
 import { useNavigate } from "react-router-dom";
+ // optional if you style it
 
 function Login() {
   const [email, setEmail] = useState("");
@@ -21,9 +22,26 @@ function Login() {
 
   return (
     <div className="container">
+      {/* 🔙 Back Button */}
+      <button className="back-btn"  onClick={() => navigate("/")}>
+        ← Back to register
+      </button>
+
       <h2>Login</h2>
-      <input placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
-      <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
+
+      <input
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+
       <button onClick={handleLogin}>Login</button>
     </div>
   );

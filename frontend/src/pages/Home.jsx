@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { socket } from "../socket/socket";
 import { useNavigate } from "react-router-dom";
-import DummyUsers from "./DummyUsers"; // ← import the new component
+import DummyUsers from "./DummyUsers"; 
 
 function Home() {
   const navigate = useNavigate();

@@ -47,7 +47,7 @@ function DummyUsers({ onClose }) {
   };
 
   return (
-    <div style={{ padding: "40px 20px", textAlign: "center", fontFamily: "sans-serif", background: "#f8f9fa", minHeight: "100vh" }}>
+    <div style={{ padding: "40px 20px", textAlign: "center", fontFamily: "sans-serif", background: "linear-gradient(135deg, #d46039, #7188ef, #b5544f, #9b9152)", minHeight: "100vh" }}>
       <h2 style={{ marginBottom: "20px", color: "#333" }}>Available Users</h2>
 
       {onClose && (
@@ -55,7 +55,7 @@ function DummyUsers({ onClose }) {
           onClick={onClose}
           style={{
             padding: "10px 20px", marginBottom: "30px", cursor: "pointer", borderRadius: "20px",
-            background: "#495057", color: "#fff", border: "none", fontWeight: "bold", boxShadow: "0 4px 6px rgba(0,0,0,0.1)"
+            background: "#1b77d4", color: "#fff", border: "none", fontWeight: "bold", boxShadow: "0 4px 6px rgba(0,0,0,0.1)"
           }}
         >
           Close
@@ -68,7 +68,7 @@ function DummyUsers({ onClose }) {
           <div
             key={user.id}
             style={{
-              background: "#fff", border: "1px solid #e9ecef", borderRadius: "16px", padding: "25px 20px",
+              background: "#e4e3d1", border: "1px solid #4f85bb", borderRadius: "16px", padding: "25px 20px",
               width: "220px", textAlign: "center", boxShadow: "0 4px 12px rgba(0,0,0,0.05)", transition: "transform 0.2s ease"
             }}
           >
@@ -81,11 +81,11 @@ function DummyUsers({ onClose }) {
               }}
             />
 
-            <div style={{ fontWeight: "bold", fontSize: "18px", color: "#212529", marginBottom: "4px" }}>
+            <div style={{ fontWeight: "bold", fontSize: "18px", color: "#54af33", marginBottom: "4px" }}>
               {user.username}
             </div>
 
-            <div style={{ fontSize: "14px", color: "#6c757d" }}>
+            <div style={{ fontSize: "14px", color: "#e3356f" }}>
               {user.age} • {user.city}
             </div>
 
@@ -106,7 +106,7 @@ function DummyUsers({ onClose }) {
                 onClick={() => setActiveChat(user)}
                 style={{
                   background: "none", border: "none", cursor: "pointer", transition: "transform 0.1s",
-                  color: "#1e90ff",
+                  color: "#db9825",
                 }}
               >
                 <FaComment size={26} />

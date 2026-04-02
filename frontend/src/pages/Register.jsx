@@ -3,70 +3,93 @@ import API from "../services/api";
 import { useNavigate } from "react-router-dom";
 
 function Register() {
-  const [username, setUsername] = useState("");
+  const [name, setName] = useState("");   // renamed username → name
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [gender, setGender] = useState(""); // New field
+  const [gender, setGender] = useState("");
   const navigate = useNavigate();
 
   const handleRegister = async () => {
-    if (!gender) {
-      alert("Please select your gender");
+    // Basic validation
+    if (!name || !email || !password || !gender) {
+      alert("Please fill in all fields!");
       return;
     }
 
     try {
       const res = await API.post("/auth/register", {
-        username,
+        name,      // matches backend expected field
         email,
         password,
         gender,
       });
-      alert("Registration successful!");
+
+      alert("✅ Registration successful!");
       navigate("/login");
     } catch (err) {
-      alert("Registration failed");
-      console.error(err);
+      // Show backend error message if available
+      console.error(err.response?.data);
+      alert(err.response?.data?.message || "❌ Registration failed");
     }
   };
 
   return (
     <div className="container">
       <h2>Register</h2>
-      <input placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
-      <input placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
-      <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
 
-      <div>
-        <label>
-          <input
-            type="radio"
-            name="gender"
-            value="male"
-            onChange={(e) => setGender(e.target.value)}
-          />
-          Male
-        </label>
-        <label>
-          <input
-            type="radio"
-            name="gender"
-            value="female"
-            onChange={(e) => setGender(e.target.value)}
-          />
-          Female
-        </label>
-        <label>
-          <input
-            type="radio"
-            name="gender"
-            value="other"
-            onChange={(e) => setGender(e.target.value)}
-          />
-          Other
-        </label>
-      </div>
+      <input
+        type="text"
+        placeholder="Name"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+      />
+      <input
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
 
+      <div className="gender-options">
+  <label className="gender-label">
+    <input
+      type="radio"
+      name="gender"
+      value="male"
+      checked={gender === "male"}
+      onChange={(e) => setGender(e.target.value)}
+    />
+    <span>Male</span>
+  </label>
+
+  <label className="gender-label">
+    <input
+      type="radio"
+      name="gender"
+      value="female"
+      checked={gender === "female"}
+      onChange={(e) => setGender(e.target.value)}
+    />
+    <span>Female</span>
+  </label>
+
+  <label className="gender-label">
+    <input
+      type="radio"
+      name="gender"
+      value="other"
+      checked={gender === "other"}
+      onChange={(e) => setGender(e.target.value)}
+    />
+    <span>Other</span>
+  </label>
+</div>
       <button onClick={handleRegister}>Register</button>
     </div>
   );
