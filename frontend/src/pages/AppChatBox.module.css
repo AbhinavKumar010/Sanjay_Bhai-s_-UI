@@ -1,0 +1,185 @@
+.appChatbox {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 340px;
+  height: 480px;
+  background-color: #ffffff !important;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  z-index: 10000;
+  overflow: hidden;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.appChatboxHeader {
+  padding: 10px 15px;
+  background: #0077ff !important;
+  color: #ffffff !important;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.headerProfile {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.headerAvatar {
+  width: 38px !important;
+  height: 38px !important;
+  border-radius: 50% !important;
+  object-fit: cover !important;
+  border: 2px solid white !important;
+  margin: 0 !important;
+}
+
+.headerInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.headerName {
+  font-size: 0.95rem !important;
+  color: white !important;
+}
+
+.onlineStatus {
+  font-size: 0.7rem;
+  opacity: 0.9;
+}
+
+.closeBtn {
+  background: transparent !important;
+  border: none !important;
+  color: white !important;
+  font-size: 1.2rem !important;
+  cursor: pointer;
+  width: auto !important;
+  padding: 5px !important;
+  margin: 0 !important;
+}
+
+.appChatboxMessages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 15px;
+  background: #f8fafc !important;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Row alignment */
+.userRow { align-self: flex-end; display: flex; justify-content: flex-end; width: 100%; }
+.botRow { align-self: flex-start; display: flex; gap: 8px; width: 100%; }
+
+.msgAvatar {
+  width: 28px !important;
+  height: 28px !important;
+  border-radius: 50% !important;
+  align-self: flex-end;
+  margin: 0 !important;
+}
+
+.appChatBubble {
+  max-width: 75%;
+  padding: 10px 14px;
+  border-radius: 18px;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  word-wrap: break-word;
+}
+
+.userBubble {
+  background: #0077ff !important;
+  color: #ffffff !important;
+  border-bottom-right-radius: 4px;
+}
+
+.botBubble {
+  background: #e2e8f0 !important;
+  color: #1a202c !important;
+  border-bottom-left-radius: 4px;
+}
+
+.appTyping {
+  font-size: 0.8rem;
+  color: #64748b !important;
+  align-self: center;
+}
+
+.appChatboxInputArea {
+  display: flex;
+  padding: 12px;
+  gap: 8px;
+  background: white !important;
+  border-top: 1px solid #e2e8f0 !important;
+}
+
+.chatInput {
+  flex: 1 !important;
+  height: 40px !important;
+  border-radius: 20px !important;
+  border: 1px solid #cbd5e0 !important;
+  padding: 0 15px !important;
+  background: white !important;
+  color: #333 !important;
+  outline: none !important;
+  margin: 0 !important;
+}
+
+.sendBtn {
+  background: #0077ff !important;
+  color: white !important;
+  border: none !important;
+  border-radius: 20px !important;
+  padding: 0 15px !important;
+  font-weight: bold !important;
+  width: auto !important;
+  height: 40px !important;
+  margin: 0 !important;
+}
+
+.sendBtn:disabled {
+  background: #cbd5e0 !important;
+}
+
+/* ... keep your previous CSS, add/update these ... */
+
+.appChatBubble {
+  max-width: 75%;
+  padding: 10px 14px;
+  border-radius: 18px;
+  font-size: 0.9rem;
+  line-height: 1.4;
+  word-wrap: break-word;
+  animation: popIn 0.3s ease-out; /* Added pop animation */
+}
+
+@keyframes popIn {
+  0% { opacity: 0; transform: scale(0.9); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.onlineStatus {
+  font-size: 0.7rem;
+  color: #c6f6d5; /* Light green for online feel */
+  font-weight: 500;
+}
+
+.headerInfo {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+/* Ensure the background of the box doesn't clash with your global animated bg */
+.appChatbox {
+  background-color: #ffffff !important;
+  color: #1a202c !important; /* Dark text for readability */
+}
