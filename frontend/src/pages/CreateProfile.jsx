@@ -33,52 +33,55 @@ function CreateProfile() {
   };
 
   const handleSubmit = async () => {
-    if (!form.name || !form.age || !form.bio || !form.gender) {
-      setError("Please fill all required fields");
-      return;
-    }
+  if (!form.name || !form.age || !form.bio || !form.gender) {
+    setError("Please fill all required fields");
+    return;
+  }
 
-    if (isNaN(form.age) || Number(form.age) <= 0) {
-      setError("Please enter a valid age");
-      return;
-    }
+  if (isNaN(form.age) || Number(form.age) <= 0) {
+    setError("Please enter a valid age");
+    return;
+  }
 
-    setLoading(true);
-    setError("");
+  setLoading(true);
+  setError("");
 
-    try {
-      const formData = new FormData();
-      formData.append("name", form.name);
-      formData.append("age", form.age);
-      formData.append("bio", form.bio);
-      formData.append("gender", form.gender);
-      formData.append(
-        "interests",
-        form.interests ? form.interests.split(",").map(i => i.trim()) : []
-      );
-      if (form.profilePic) formData.append("profilePic", form.profilePic);
+  try {
+    const formData = new FormData();
+    formData.append("name", form.name);
+    formData.append("age", form.age);
+    formData.append("bio", form.bio);
+    formData.append("gender", form.gender);
 
-      await axios.post(`${API}/api/profile`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+    // handle interests array
+    form.interests
+      ?.split(",")
+      .map((i) => i.trim())
+      .forEach((i) => formData.append("interests[]", i));
 
-      alert("✅ Profile Saved");
-      setForm({
-        name: "",
-        age: "",
-        bio: "",
-        gender: "",
-        interests: "",
-        profilePic: null,
-      });
-      setPreview(null);
-    } catch (err) {
-      console.error(err);
-      setError("Failed to save profile. Try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
+    if (form.profilePic) formData.append("profilePic", form.profilePic);
+
+    await axios.post(`${API}/profile`, formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+
+    alert("✅ Profile Saved");
+    setForm({
+      name: "",
+      age: "",
+      bio: "",
+      gender: "",
+      interests: "",
+      profilePic: null,
+    });
+    setPreview(null);
+  } catch (err) {
+    console.error(err.response || err);
+    setError("Failed to save profile. Try again.");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="profile-container">
@@ -143,7 +146,7 @@ function CreateProfile() {
           margin: 20px auto;
           padding: 20px;
           border-radius: 10px;
-          background-color: #f9f9f9;
+          background-color: #edf1f3;
           font-family: Arial, sans-serif;
           box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
@@ -168,8 +171,9 @@ function CreateProfile() {
           padding: 12px;
           margin-top: 5px;
           border-radius: 8px;
-          border: 1px solid #ccc;
+          border: 1px solid #a17f7f;
           font-size: 1rem;
+          color: #333;
         }
 
         textarea {

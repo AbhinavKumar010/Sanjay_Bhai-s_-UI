@@ -7,12 +7,12 @@ function Feed() {
   const [profiles, setProfiles] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const API = import.meta.env.VITE_API_URL;
+  const API = import.meta.env.VITE_API_URL; // already includes /api
 
   useEffect(() => {
     const fetchProfiles = async () => {
       try {
-        const res = await axios.get(`${API}/api/profile`);
+        const res = await axios.get(`${API}/profile`); // ✅ no extra /api
         console.log("Fetched profiles:", res.data);
         setProfiles(Array.isArray(res.data) ? res.data : []);
       } catch (err) {
@@ -28,7 +28,6 @@ function Feed() {
 
   return (
     <div style={{ padding: 20 }}>
-      {/* Back Button */}
       <button
         onClick={() => navigate(-1)}
         style={{
@@ -47,13 +46,12 @@ function Feed() {
       <h2>Profiles Feed</h2>
 
       {loading && <p>Loading profiles...</p>}
-
       {!loading && profiles.length === 0 && <p>No profiles found.</p>}
 
       <div style={{ display: "flex", flexWrap: "wrap", gap: 20, justifyContent: "center" }}>
         {profiles.map((profile) => (
           <div
-            key={profile._id} // ensure _id exists
+            key={profile._id}
             style={{
               border: "1px solid #ccc",
               borderRadius: 8,
