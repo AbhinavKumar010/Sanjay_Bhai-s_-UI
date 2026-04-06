@@ -4,17 +4,20 @@ import axios from "axios";
 
 function Feed() {
   const navigate = useNavigate();
-  const [profiles, setProfiles] = useState([]); // ✅ Initialize as array
+  const [profiles, setProfiles] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  const API = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     const fetchProfiles = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/profile"); // replace with live URL if deployed
-        setProfiles(Array.isArray(res.data) ? res.data : []); // ✅ ensure array
+        const res = await axios.get(`${API}/api/profile`);
+        console.log("Fetched profiles:", res.data);
+        setProfiles(Array.isArray(res.data) ? res.data : []);
       } catch (err) {
-        console.error(err);
-        setProfiles([]); // fallback
+        console.error("Error fetching profiles:", err);
+        setProfiles([]);
       } finally {
         setLoading(false);
       }
@@ -47,34 +50,34 @@ function Feed() {
 
       {!loading && profiles.length === 0 && <p>No profiles found.</p>}
 
-      <div style={{ display: "flex", flexWrap: "wrap", gap: 20 }}>
-        {Array.isArray(profiles) &&
-          profiles.map((profile) => (
-            <div
-              key={profile.userId}
-              style={{
-                border: "1px solid #ccc",
-                borderRadius: 8,
-                padding: 16,
-                width: 220,
-                boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
-              }}
-            >
-              <h3>{profile.name}</h3>
-              <p>Age: {profile.age}</p>
-              <p>Gender: {profile.gender}</p>
-              <p>Bio: {profile.bio}</p>
-              <p>Interests: {profile.interests?.join(", ")}</p>
-              {profile.profilePic && (
-                <img
-                  src={profile.profilePic}
-                  alt="profile"
-                  width={180}
-                  style={{ borderRadius: 8, marginTop: 10 }}
-                />
-              )}
-            </div>
-          ))}
+      <div style={{ display: "flex", flexWrap: "wrap", gap: 20, justifyContent: "center" }}>
+        {profiles.map((profile) => (
+          <div
+            key={profile._id} // ensure _id exists
+            style={{
+              border: "1px solid #ccc",
+              borderRadius: 8,
+              padding: 16,
+              width: "100%",
+              maxWidth: 220,
+              boxShadow: "0 2px 5px rgba(0,0,0,0.1)",
+              boxSizing: "border-box",
+            }}
+          >
+            <h3>{profile.name}</h3>
+            <p>Age: {profile.age}</p>
+            <p>Gender: {profile.gender}</p>
+            <p>Bio: {profile.bio}</p>
+            <p>Interests: {profile.interests?.join(", ")}</p>
+            {profile.profilePic && (
+              <img
+                src={profile.profilePic}
+                alt="profile"
+                style={{ width: "100%", borderRadius: 8, marginTop: 10 }}
+              />
+            )}
+          </div>
+        ))}
       </div>
     </div>
   );
