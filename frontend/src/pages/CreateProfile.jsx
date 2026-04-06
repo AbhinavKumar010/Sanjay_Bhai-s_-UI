@@ -52,6 +52,7 @@ function CreateProfile() {
     formData.append("age", form.age);
     formData.append("bio", form.bio);
     formData.append("gender", form.gender);
+    formData.append("userId", "12345");
 
     // handle interests array
     form.interests

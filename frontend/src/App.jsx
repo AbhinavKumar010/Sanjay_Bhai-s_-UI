@@ -11,6 +11,7 @@ import Chat from "./pages/Chat";
 
 import CreateProfile from "./pages/CreateProfile";
 import Feed from "./pages/Feed";
+import ProfilesList from "./pages/ProfilesList";
 
 // ================= SOCKET.IO CONFIG =================
 import { io } from "socket.io-client";
@@ -124,6 +125,7 @@ function App() {
         <Route path="/chat" element={<Chat />} />
         <Route path="/create-profile" element={<CreateProfile />} />
         <Route path="/feed" element={<Feed />} />  
+        <Route path="/profiles" element={<ProfilesList />} />
       </Routes>
     </Router>
   );

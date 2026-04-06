@@ -7,12 +7,12 @@ function Feed() {
   const [profiles, setProfiles] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const API = import.meta.env.VITE_API_URL; // already includes /api
+  const API = import.meta.env.VITE_API_URL;
 
   useEffect(() => {
     const fetchProfiles = async () => {
       try {
-        const res = await axios.get(`${API}/profile`); // ✅ no extra /api
+        const res = await axios.get(`${API}/profile`);
         console.log("Fetched profiles:", res.data);
         setProfiles(Array.isArray(res.data) ? res.data : []);
       } catch (err) {
@@ -25,6 +25,10 @@ function Feed() {
 
     fetchProfiles();
   }, []);
+
+  const handleChat = (name) => alert(`📩 Chat request sent to ${name}`);
+  const handleAudioCall = (name) => alert(`🎧 Audio call request sent to ${name}`);
+  const handleVideoCall = (name) => alert(`🎥 Video call request sent to ${name}`);
 
   return (
     <div style={{ padding: 20 }}>
@@ -44,7 +48,6 @@ function Feed() {
       </button>
 
       <h2>Profiles Feed</h2>
-
       {loading && <p>Loading profiles...</p>}
       {!loading && profiles.length === 0 && <p>No profiles found.</p>}
 
@@ -67,6 +70,13 @@ function Feed() {
             <p>Gender: {profile.gender}</p>
             <p>Bio: {profile.bio}</p>
             <p>Interests: {profile.interests?.join(", ")}</p>
+            <p>
+              Status:{" "}
+              <span style={{ color: profile.isAvailable ? "green" : "red" }}>
+                {profile.isAvailable ? "Available" : "Offline"}
+              </span>
+            </p>
+
             {profile.profilePic && (
               <img
                 src={profile.profilePic}
@@ -74,6 +84,33 @@ function Feed() {
                 style={{ width: "100%", borderRadius: 8, marginTop: 10 }}
               />
             )}
+
+            <div style={{ marginTop: 12, display: "flex", flexDirection: "column", gap: 8 }}>
+              {profile.isAvailable && profile.canChat && (
+                <button
+                  onClick={() => handleChat(profile.name)}
+                  style={{ padding: "6px", borderRadius: 6, background: "#4caf50", color: "white", border: "none", cursor: "pointer" }}
+                >
+                  Chat
+                </button>
+              )}
+              {profile.isAvailable && profile.canAudioCall && (
+                <button
+                  onClick={() => handleAudioCall(profile.name)}
+                  style={{ padding: "6px", borderRadius: 6, background: "#2196f3", color: "white", border: "none", cursor: "pointer" }}
+                >
+                  Audio Call
+                </button>
+              )}
+              {profile.isAvailable && profile.canVideoCall && (
+                <button
+                  onClick={() => handleVideoCall(profile.name)}
+                  style={{ padding: "6px", borderRadius: 6, background: "#f44336", color: "white", border: "none", cursor: "pointer" }}
+                >
+                  Video Call
+                </button>
+              )}
+            </div>
           </div>
         ))}
       </div>
