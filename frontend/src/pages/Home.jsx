@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { socket } from "../socket/socket";
 import { useNavigate } from "react-router-dom";
-import DummyUsers from "./DummyUsers"; 
+import DummyUsers from "./DummyUsers";
 
 function Home() {
   const navigate = useNavigate();
   const [onlineUsers, setOnlineUsers] = useState([]);
   const [searching, setSearching] = useState(false);
-  const [showDummy, setShowDummy] = useState(false); // ← new state
+  const [showDummy, setShowDummy] = useState(false);
 
-  // Fetch online users and handle matches
+  // ================= SOCKET =================
   useEffect(() => {
     socket.emit("get-online-users");
 
@@ -29,18 +29,41 @@ function Home() {
   const startMatching = () => {
     setSearching(true);
     socket.emit("find-match");
-
-    // Show dummy users after clicking "Find Someone"
     setShowDummy(true);
+  };
+
+  // ================= NEW NAVIGATION =================
+  const goToProfile = () => {
+    navigate("/create-profile");
+  };
+
+  const goToFeed = () => {
+    navigate("/feed");
   };
 
   return (
     <div className="container">
       <h2>Find Someone to Chat</h2>
+
+      {/* Existing feature */}
       <button onClick={startMatching} disabled={searching}>
         {searching ? "Searching..." : "Find Someone"}
       </button>
 
+      {/* ✅ NEW DATING FEATURES */}
+      <div style={{ marginTop: "20px" }}>
+        <h3>Dating Features</h3>
+
+        <button onClick={goToProfile} style={{ marginRight: "10px" }}>
+          👤 Create Profile
+        </button>
+
+        <button onClick={goToFeed}>
+          🔥 Discover People
+        </button>
+      </div>
+
+      {/* Existing online users */}
       <h3>Registered Online Users</h3>
       <ul>
         {onlineUsers.map((user) => (
@@ -48,7 +71,7 @@ function Home() {
         ))}
       </ul>
 
-      {/* Render dummy users without touching existing functions */}
+      {/* Existing dummy users */}
       {showDummy && <DummyUsers onClose={() => setShowDummy(false)} />}
     </div>
   );
